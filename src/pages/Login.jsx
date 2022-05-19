@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createUser } from '../services/userAPI';
+import Loading from '../components/Loading';
+import LOGO_POSITIVA from '../assets/LOGO_POSITIVA.png';
 
 class Login extends Component {
   state = {
@@ -34,9 +36,10 @@ class Login extends Component {
   render() {
     const { isDisable, name, isLoading } = this.state;
     return (
-      <div data-testid="page-login">
-        { isLoading ? <p>Carregando...</p> : (
-          <form>
+      <div className="page-login" data-testid="page-login">
+        <img src={ LOGO_POSITIVA } alt="TrybeTunes Logo" />
+        { isLoading ? <Loading /> : (
+          <form className="login_form">
             <input
               name="name"
               value={ name }
