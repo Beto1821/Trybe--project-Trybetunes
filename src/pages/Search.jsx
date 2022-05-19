@@ -9,13 +9,14 @@ class Search extends Component {
     isDisable: true,
     isLoading: false,
     albuns: [],
+    clear: '',
   };
 
   handleClick = async () => {
     const { name } = this.state;
     this.setState({ isLoading: true });
     const banda = await searchAlbumsAPI(name);
-    this.setState({ albuns: banda, isLoading: false });
+    this.setState({ clear: name, name: '', albuns: banda, isLoading: false });
   }
 
   valiHandle = () => {
@@ -33,37 +34,46 @@ class Search extends Component {
   };
 
   render() {
-    const { isDisable, name, isLoading, albuns } = this.state;
-    return isLoading ? (
-      <Loading />
-    ) : (
-      <div>
-        <div data-testid="page-search">
-          <Header />
-          <form className="login_form">
-            <input
-              name="name"
-              value={ name }
-              type="text"
-              placeholder="Nome da Banda"
-              data-testid="search-artist-input"
-              onChange={ this.handleChange }
-            />
-            <button
-              type="button"
-              data-testid="search-artist-button"
-              disabled={ isDisable }
-              onClick={ this.handleClick }
-            >
-              Pesquisar
-            </button>
-          </form>
-        </div>
-        { albuns.map((disco, key) => (
-          <div key={ key }>
-            { disco.collectionName }
-          </div>
-        ))}
+    const { isDisable, name, isLoading, albuns, clear } = this.state;
+    return (
+      <div data-testid="page-search">
+        <Header />
+        <form className="login_form">
+          <input
+            name="name"
+            value={ name }
+            type="text"
+            placeholder="Nome da Banda"
+            data-testid="search-artist-input"
+            onChange={ this.handleChange }
+          />
+          <button
+            type="button"
+            data-testid="search-artist-button"
+            disabled={ isDisable }
+            onClick={ this.handleClick }
+          >
+            Pesquisar
+          </button>
+        </form>
+        { isLoading ? (
+          <Loading />
+        ) : (
+          <h1>
+            Resultado de álbuns de:
+            {' '}
+            { clear }
+          </h1>
+        )}
+        {albuns.length === 0 ? (
+          <h2> Nenhum álbum foi encontrado </h2>
+        ) : (
+          albuns.map((disco, key) => (
+            <div key={ key }>
+              { disco.collectionName }
+            </div>
+          ))
+        )}
       </div>
     );
   }
