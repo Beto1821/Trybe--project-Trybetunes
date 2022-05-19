@@ -34,7 +34,6 @@ class Search extends Component {
 
   render() {
     const { isDisable, name, isLoading, albuns } = this.state;
-    console.log(albuns);
     return isLoading ? (
       <Loading />
     ) : (
@@ -60,7 +59,11 @@ class Search extends Component {
             </button>
           </form>
         </div>
-        { albuns.map((disco) => disco.collectionName)}
+        { albuns.map((disco, key) => (
+          <div key={ key }>
+            { disco.collectionName }
+          </div>
+        ))}
       </div>
     );
   }
