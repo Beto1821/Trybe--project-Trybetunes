@@ -13,9 +13,9 @@ class Album extends React.Component {
     favoriteSongsList: [],
   };
 
- componentDidMount = async () => {
-   this.getMusicList();
- }
+  componentDidMount = async () => {
+    this.getMusicList();
+  };
 
   getMusicList = async () => {
     const {
@@ -26,23 +26,28 @@ class Album extends React.Component {
     this.setState({ isLoading: true });
     const musicsList = await getMusics(id);
     const favoriteList = await getFavoriteSongs();
-    const musicDetails = musicsList
-      .map(
-        ({
-          previewUrl,
-          trackName,
-          artworkUrl100,
-          collectionName,
-          artistName,
-          trackId,
-        }) => ({
-          previewUrl, trackName, artworkUrl100, collectionName, artistName, trackId,
-        }),
-      );
+    const musicDetails = musicsList.map(
+      ({
+        previewUrl,
+        trackName,
+        artworkUrl100,
+        collectionName,
+        artistName,
+        trackId,
+      }) => ({
+        previewUrl,
+        trackName,
+        artworkUrl100,
+        collectionName,
+        artistName,
+        trackId,
+      }),
+    );
     this.setState({
       isLoading: false,
       musicDetails,
-      favoriteSongsList: favoriteList });
+      favoriteSongsList: favoriteList,
+    });
   };
 
   render() {
@@ -50,17 +55,15 @@ class Album extends React.Component {
     return (
       <div data-testid="page-album">
         <Header />
-        { isLoading && (
-          <Loading />
-        )}
-        { musicDetails.length > 0 && (
+        {isLoading && <Loading />}
+        {musicDetails.length > 0 && (
           <div>
             <img src={ musicDetails[0].artworkUrl100 } alt="you knowww!" />
-            <h1 data-testid="album-name">{ musicDetails[0].collectionName }</h1>
-            <h1 data-testid="artist-name">{ musicDetails[0].artistName }</h1>
+            <h1 data-testid="album-name">{musicDetails[0].collectionName}</h1>
+            <h1 data-testid="artist-name">{musicDetails[0].artistName}</h1>
           </div>
         )}
-        { musicDetails
+        {musicDetails
           .filter(({ previewUrl }) => previewUrl)
           .map(({ trackName, previewUrl, trackId }, index) => (
             <MusicCard
@@ -68,8 +71,9 @@ class Album extends React.Component {
               trackName={ trackName }
               previewUrl={ previewUrl }
               trackId={ trackId }
-              isFavorite={ favoriteSongsList
-                .some((song) => song.trackId === trackId) }
+              isFavorite={ favoriteSongsList.some(
+                (song) => song.trackId === trackId,
+              ) }
             />
           ))}
       </div>
